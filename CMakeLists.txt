@@ -53,3 +53,41 @@ pico_enable_stdio_uart(MS_01_LED_Buttons 0)
 
 # Generate .uf2, .bin, .hex, and .map next to .elf.
 pico_add_extra_outputs(MS_01_LED_Buttons)
+
+# LCD Driver - Standalone Test
+add_executable(lcd_test
+    lcd_test.c
+    lcd.c
+)
+
+# Link the required Raspberry Pi Pico libraries
+target_link_libraries(lcd_test
+    pico_stdlib
+    hardware_i2c
+)
+
+# Enable USB serial support
+pico_enable_stdio_usb(lcd_test 1)
+
+# Disable UART serial support
+pico_enable_stdio_uart(lcd_test 0)
+
+# Generate the UF2 firmware file
+pico_add_extra_outputs(lcd_test)
+
+# Keypad + LCD Integration Test
+add_executable(keypad_lcd_test
+    keypad_lcd_test.c
+    keypad.c
+    lcd.c
+)
+
+target_link_libraries(keypad_lcd_test
+    pico_stdlib
+    hardware_i2c
+)
+
+pico_enable_stdio_usb(keypad_lcd_test 1)
+pico_enable_stdio_uart(keypad_lcd_test 0)
+
+pico_add_extra_outputs(keypad_lcd_test)
